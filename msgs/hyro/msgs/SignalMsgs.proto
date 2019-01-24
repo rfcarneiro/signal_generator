@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+// The namespace where the messages classes will be available
+package hyro.msgs;
+
+message SignalMsgs
+{
+  int64 timestamp = 1;
+  string frame_id = 2;
+  double value = 3;
+}
