@@ -18,7 +18,7 @@ void SignalGenerator::setAmp (double amp){
 }
 
 void SignalGenerator::setDeg (double deg){
-  m_deg = deg;
+  m_step = deg;
 }
 
 void SignalGenerator::setStep (double step){
@@ -30,7 +30,7 @@ double SignalGenerator::getAmp (void){
 }
 
 double SignalGenerator::getDeg (void){
-  return m_deg;
+  return m_step;
 }
 
 double SignalGenerator::getStep (void){

@@ -68,7 +68,9 @@ SignalGeneratorComponent::update()
   signal_msg.value = analog_signal;
 
   m_signal_output->sendAsync(signal_msg);
-  s_logger->info("\n frame id: {}, \n timestamp: {}, \n Signal: {} \n", signal_msg.frame_id, signal_msg.timestamp, signal_msg.value);
+  #ifdef DEBUG
+    s_logger->info("\n frame id: {}, \n timestamp: {}, \n Signal: {} \n", signal_msg.frame_id, signal_msg.timestamp, signal_msg.value);
+  #endif
   return hyro::Result::RESULT_OK;
 }
 

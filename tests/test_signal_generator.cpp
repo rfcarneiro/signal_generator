@@ -15,22 +15,8 @@
 #define TEST_RETURNED_VALUE_POS 1.0
 #define TEST_RETURNED_VALUE_NEG 0.0
 
-static void
-__assert_and_run_state_machine(hyro::StateMachine &sm,
-                               const hyro::ComponentConfiguration &conf,
-                               const hyro::ConnectionConfiguration &endpoint)
-{
-  ASSERT_EQ(hyro::Result::RESULT_OK, sm.init(conf));
-
-  ASSERT_EQ(hyro::Result::RESULT_OK, sm.start());
-
-  ASSERT_EQ(hyro::Result::RESULT_OK, sm.connect(endpoint));
-
-  ASSERT_EQ(hyro::Result::RESULT_OK, sm.check());
-}
-
 using namespace signal_generator;
-using namespace digital_converter;
+
 
 namespace hyro
 {
@@ -64,8 +50,8 @@ TEST(ExampleTest, SignalGeneratorComponentCheck)
   ASSERT_EQ(Result::RESULT_OK, result);
 
   //Fake input channels
-  auto AnalogOut = std::make_shared<FakeInput<SignalMsgs>>("AnalogOut"_uri, "api", "/generator/analog_output");
-  ASSERT_TRUE(AnalogOut->connect());
+  auto analog_out = std::make_shared<FakeInput<SignalMsgs>>("AnalogOut"_uri, "api", "/generator/analog_output");
+  ASSERT_TRUE(analog_out->connect());
 
   DynamicPropertyAccess dynamic_property_access("/generator"_uri);
 
@@ -88,7 +74,7 @@ TEST(ExampleTest, SignalGeneratorComponentCheck)
 
   auto value_analog_out = std::shared_ptr<const SignalMsgs>();
 
-  auto return_value = AnalogOut->receive(value_analog_out, 500ms);
+  auto return_value = analog_out->receive(value_analog_out, 500ms);
   ASSERT_EQ(ReceiveStatus::RECEIVE_OK, return_value);
   ASSERT_GE(value_analog_out->value,(-TEST_AMPLITUDE));
   ASSERT_LE(value_analog_out->value,TEST_AMPLITUDE);
@@ -131,7 +117,7 @@ TEST(ExampleTest, DigitalConverterComponentCheck)
   //TEST
   sm.update();
 
-  auto ValueDigitalOut = std::shared_ptr<const float>();
+  auto value_digital_out = std::shared_ptr<const float>();
   //auto ValueAnalogIn = std::shared_ptr<const SignalMsgs>();
   ReceiveStatus ret;
 
@@ -142,10 +128,10 @@ TEST(ExampleTest, DigitalConverterComponentCheck)
 
   AnalogInput->sendAsync(value_analog_in);
 
-  ret = DigitalOutput->receive(ValueDigitalOut, 500ms);
+  ret = DigitalOutput->receive(value_digital_out, 500ms);
   ASSERT_EQ(ReceiveStatus::RECEIVE_OK, ret);
 
-  EXPECT_EQ(*ValueDigitalOut, TEST_RETURNED_VALUE_NEG);
+  ASSERT_EQ(*value_digital_out, TEST_RETURNED_VALUE_NEG);
 
   value_analog_in.frame_id = TEST_FRAMID;
   value_analog_in.timestamp = TEST_TIMESTAMP;
@@ -153,10 +139,10 @@ TEST(ExampleTest, DigitalConverterComponentCheck)
 
   AnalogInput->sendAsync(value_analog_in);
 
-  ret = DigitalOutput->receive(ValueDigitalOut, 500ms);
+  ret = DigitalOutput->receive(value_digital_out, 500ms);
   ASSERT_EQ(ReceiveStatus::RECEIVE_OK, ret);
 
-  EXPECT_EQ(*ValueDigitalOut, TEST_RETURNED_VALUE_POS);
+  ASSERT_EQ(*value_digital_out, TEST_RETURNED_VALUE_POS);
 }
 
 int main(int argc, char **argv)

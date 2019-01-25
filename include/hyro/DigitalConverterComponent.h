@@ -29,7 +29,7 @@
 #include <hyro/msgs/SignalMsgs.h>
 #include <internal/Thresholding.h>
 
-namespace digital_converter
+namespace signal_generator
 {
 
 class SIGNAL_GENERATOR_COMPONENTS_EXPORT DigitalConverterComponent : public hyro::Component
@@ -128,6 +128,6 @@ private:
 
 }; //class
 
-} // namespace digital_converter
+} // namespace signal_generator
 
 #endif // SIGNALGENERATORCOMPONENT_HPP

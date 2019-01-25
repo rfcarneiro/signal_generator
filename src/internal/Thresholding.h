@@ -39,7 +39,9 @@ class Thresholding{
   double m_amplitude;
 
   public:
-  Thresholding (double amplitude = DIGITAL_AMPLITUDE_DEFAULT, double digital_zero = DIGITAL_ZERO_DEFAULT,double digital_one = DIGITAL_ONE_DEFAULT);
+  Thresholding (double amplitude = DIGITAL_AMPLITUDE_DEFAULT, 
+                double digital_zero = DIGITAL_ZERO_DEFAULT,
+                double digital_one = DIGITAL_ONE_DEFAULT);
   /**
    * @brief Set the Threshold value
    * 

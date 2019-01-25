@@ -5,9 +5,8 @@
 
 using namespace hyro;
 
-namespace digital_converter
+namespace signal_generator
 {
-
 std::shared_ptr<hyro::HyroLogger> DigitalConverterComponent::s_logger = hyro::HyroLoggerManager::CreateLogger("DigitalConverterComponent");
 
 hyro::Result
@@ -55,7 +54,9 @@ void DigitalConverterComponent::callback(std::shared_ptr<const SignalMsgs> &&msg
 {
   float digital_signal = (float) m_thresholding.getThresholdSignal(msg->value);
   signal_output->sendAsync(digital_signal);
-  s_logger->info("\n Received signal: {}, \n Converted signal: {}", msg->value, digital_signal);
+  #ifdef DEBUG
+    s_logger->info("\n Received signal: {}, \n Converted signal: {}", msg->value, digital_signal);
+  #endif
 }
 
 } // namespace signal_generator

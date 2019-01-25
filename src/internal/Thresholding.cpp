@@ -1,7 +1,8 @@
 #include <internal/Thresholding.h>
 
-Thresholding::Thresholding (double amplitude,double digital_zero,double digital_one):
-  m_digital_zero(digital_zero)
+Thresholding::Thresholding (double amplitude,double digital_zero,double digital_one)
+  : m_amplitude(amplitude)
+  , m_digital_zero(digital_zero)
   , m_digital_one(digital_one)
 {
 }
@@ -16,8 +17,5 @@ double Thresholding::getThreshold (void){
 }
 
 double Thresholding::getThresholdSignal (double signal){
-  if (signal > m_threshold)
-    return m_digital_one;
-  else
-    return m_digital_zero;
+  return (signal > m_threshold) ? m_digital_one : m_digital_zero;
 }
