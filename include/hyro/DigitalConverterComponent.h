@@ -1,5 +1,12 @@
-/** \brief Digital Converter Hyro Component.
- *
+/** 
+ * @file SignalGeneratorComponent.h
+ * @author Rodrigo Fonseca Carneiro (carneiro.rodrigo@gmail.com)
+ * @brief Digital Converter Hyro Component.
+ * @version 0.1
+ * @date 2019-01-24
+ * 
+ * @copyright Copyright (c) 2019
+ * 
  * The DigitalConverterComponent reads signal values and uses Thresholding class to convert these values in two values. 
  * It simulates a component that transforms the output of a sensor. 
  * This component has an input channel to read the signal values. An output channel writes the thresholded values. 

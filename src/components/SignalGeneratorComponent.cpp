@@ -10,29 +10,22 @@ std::shared_ptr<hyro::HyroLogger> SignalGeneratorComponent::s_logger = hyro::Hyr
 hyro::Result
 SignalGeneratorComponent::init(const hyro::ComponentConfiguration &config)
 {
-  m_amplitude = 15.0;
-  m_frequency = 30.0;
-  m_cosine = true;
-  m_name = "Name 1";
-
-  m_signal.setAmp(m_amplitude);
-  m_signal.setDeg(m_frequency);
   m_signal.setStep(5);
 
-  signal_output = this->registerOutput<hyro::SignalMsgs>("analog_output"_uri, config);
+  m_signal_output = this->registerOutput<hyro::SignalMsgs>("analog_output"_uri, config);
 
   std::shared_ptr<ChannelOutput<std::vector<int>>>
   m_dummy = this->registerOutput<std::vector<int>>("fix_dynamic"_uri, config);
 
-  registerDynamicProperty<float>("Amplitude",
+  registerDynamicProperty<float>("amplitude",
                                   &SignalGeneratorComponent::setAmplitude,
                                   &SignalGeneratorComponent::getAmplitude,
                                   this);
-  registerDynamicProperty<float>("Frequency",
+  registerDynamicProperty<float>("frequency",
                                   &SignalGeneratorComponent::setFrequency,
                                   &SignalGeneratorComponent::getFrequency,
                                   this);
-  registerDynamicProperty<bool>("Cosine",
+  registerDynamicProperty<bool>("cosine",
                                   &SignalGeneratorComponent::setCosine,
                                   &SignalGeneratorComponent::getCosine,
                                   this);
@@ -43,7 +36,7 @@ SignalGeneratorComponent::init(const hyro::ComponentConfiguration &config)
 hyro::Result
 SignalGeneratorComponent::reset()
 {
-  signal_output.reset();
+  m_signal_output.reset();
 
   return hyro::Result::RESULT_OK;
 }
@@ -74,26 +67,24 @@ SignalGeneratorComponent::update()
   signal_msg.timestamp = (TimeUtils::Now_TimeSinceEpoch().count());
   signal_msg.value = analog_signal;
 
-  signal_output->sendAsync(signal_msg);
+  m_signal_output->sendAsync(signal_msg);
   s_logger->info("\n frame id: {}, \n timestamp: {}, \n Signal: {} \n", signal_msg.frame_id, signal_msg.timestamp, signal_msg.value);
   return hyro::Result::RESULT_OK;
 }
 
 bool SignalGeneratorComponent::setAmplitude(float amp){
-  m_amplitude = amp;
-  m_signal.setAmp(m_amplitude);
+  m_signal.setAmp(amp);
   return true;
 }
 float SignalGeneratorComponent::getAmplitude(void){
-  return m_amplitude;
+  return (m_signal.getAmp());
 }
 bool SignalGeneratorComponent::setFrequency(float freq){
-  m_frequency = freq;
-  m_signal.setDeg(m_frequency);
+  m_signal.setDeg(freq);
   return true;
 }
 float SignalGeneratorComponent::getFrequency(void){
-  return m_frequency;
+  return (m_signal.getDeg());
 }
 bool SignalGeneratorComponent::setCosine(bool cosine){
   m_cosine = cosine;

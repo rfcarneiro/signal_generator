@@ -16,9 +16,6 @@ DigitalConverterComponent::init (const hyro::ComponentConfiguration & config)
   signal_input = this->registerInput<SignalMsgs>("analog_input"_uri, config);
   signal_output = this->registerOutput<float>("digital_output"_uri, config);
 
-  m_amplitude = 10.0;
-  m_threshold = -10.0;
-  
   m_thresholding.setThreshold(m_threshold);
   
   return hyro::Result::RESULT_OK;
@@ -56,10 +53,9 @@ DigitalConverterComponent::update()
 
 void DigitalConverterComponent::callback(std::shared_ptr<const SignalMsgs> &&msg)
 {
-  float digital_signal = (float) m_amplitude*m_thresholding.getThresholdSignal(msg->value);
+  float digital_signal = (float) m_thresholding.getThresholdSignal(msg->value);
   signal_output->sendAsync(digital_signal);
   s_logger->info("\n Received signal: {}, \n Converted signal: {}", msg->value, digital_signal);
-  //std::cerr << signalMsg->value << " " << digital << std::endl;
 }
 
 } // namespace signal_generator

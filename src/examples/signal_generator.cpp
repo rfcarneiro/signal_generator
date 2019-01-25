@@ -41,10 +41,8 @@ int main(void)
                             "}";
 
   //input_proto = "grpc";
-  //hyro::msgs::geometry::Quaternion q();
+  
   // Dynamic Property
-
-
   signal_generator_sm.init(ComponentConfiguration(generator_configuration));
   digital_converter_sm.init(ComponentConfiguration(converter_configuration));
 
@@ -64,11 +62,10 @@ int main(void)
 
   DynamicPropertyAccess dynamic_property_access("/generator"_uri);
 
-  dynamic_property_access.get<float>("Amplitude", amp);
-  dynamic_property_access.get<float>("Frequency", freq);
-  dynamic_property_access.get<bool>("Cosine", cosine);
+  dynamic_property_access.get<float>("amplitude", amp);
+  dynamic_property_access.get<float>("frequency", freq);
+  dynamic_property_access.get<bool>("cosine", cosine);
 
-  std::cout << "Oi" << std::endl;
   std::cout << "Amplitude: "<< amp << " Frequency: " << freq << " Waveform: " << (cosine?"Cosine":"Sine") <<std::endl;
   std::cout << "1 - Use these values" << std::endl << "2 - Choose new values" << std::endl;
   int option;
@@ -81,9 +78,9 @@ int main(void)
     std::cout << "1 - Cosine " << std::endl << "2 - Sine " << std::endl << "-> ";
     std::cin >> option;
     cosine = ((option==1)?true:false);
-      dynamic_property_access.set<float>("Amplitude", amp);
-      dynamic_property_access.set<float>("Frequency", freq);
-      dynamic_property_access.set<bool>("Cosine", cosine);
+      dynamic_property_access.set<float>("amplitude", amp);
+      dynamic_property_access.set<float>("frequency", freq);
+      dynamic_property_access.set<bool>("cosine", cosine);
   }
 
 

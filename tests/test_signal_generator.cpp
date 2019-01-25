@@ -6,6 +6,15 @@
 
 #include <gtest/gtest.h>
 
+#define TEST_AMPLITUDE 100.0
+#define TEST_FREQUENCY 30.0
+#define TEST_COSINE false
+#define TEST_TIMESTAMP 1000000000
+#define TEST_FRAMID     "Teste 1"
+#define TEST_VALUE      20.0
+#define TEST_RETURNED_VALUE_POS 1.0
+#define TEST_RETURNED_VALUE_NEG 0.0
+
 static void
 __assert_and_run_state_machine(hyro::StateMachine &sm,
                                const hyro::ComponentConfiguration &conf,
@@ -19,9 +28,6 @@ __assert_and_run_state_machine(hyro::StateMachine &sm,
 
   ASSERT_EQ(hyro::Result::RESULT_OK, sm.check());
 }
-
-#define ASSERT_AND_RUN_STATE_MACHINE(sm, conf, endpoint) \
-  __assert_and_run_state_machine(sm, conf, endpoint)
 
 using namespace signal_generator;
 using namespace digital_converter;
@@ -63,27 +69,29 @@ TEST(ExampleTest, SignalGeneratorComponentCheck)
 
   DynamicPropertyAccess dynamic_property_access("/generator"_uri);
 
-  auto ret = dynamic_property_access.set<bool>("Cosine", true);
+  auto ret = dynamic_property_access.set<bool>("cosine", TEST_COSINE);
   ASSERT_EQ(ret, true);
-  ASSERT_TRUE(dynamic_property_access.set<float>("Amplitude", 100.0));
-  ASSERT_TRUE(dynamic_property_access.set<float>("Frequency", 30.0));
+  ASSERT_TRUE(dynamic_property_access.set<float>("amplitude", TEST_AMPLITUDE));
+  ASSERT_TRUE(dynamic_property_access.set<float>("frequency", TEST_FREQUENCY));
 
   bool cosine;
-  dynamic_property_access.get<bool>("Cosine", cosine);
-  ASSERT_EQ(cosine, true);
+  dynamic_property_access.get<bool>("cosine", cosine);
+  ASSERT_EQ(cosine, TEST_COSINE);
 
   float amp, freq;
-  dynamic_property_access.get<float>("Amplitude", amp);
-  ASSERT_EQ(amp, 100.0);
-  dynamic_property_access.get<float>("Frequency", freq);
-  ASSERT_EQ(freq, 30.0);
+  dynamic_property_access.get<float>("amplitude", amp);
+  ASSERT_EQ(amp, TEST_AMPLITUDE);
+  dynamic_property_access.get<float>("frequency", freq);
+  ASSERT_EQ(freq, TEST_FREQUENCY);
 
   sm.update();
 
-  auto ValueAnalogOut = std::shared_ptr<const SignalMsgs>();
+  auto value_analog_out = std::shared_ptr<const SignalMsgs>();
 
-  auto return_value = AnalogOut->receive(ValueAnalogOut, 500ms);
+  auto return_value = AnalogOut->receive(value_analog_out, 500ms);
   ASSERT_EQ(ReceiveStatus::RECEIVE_OK, return_value);
+  ASSERT_GE(value_analog_out->value,(-TEST_AMPLITUDE));
+  ASSERT_LE(value_analog_out->value,TEST_AMPLITUDE);
 }
 
 TEST(ExampleTest, DigitalConverterComponentCheck)
@@ -127,28 +135,28 @@ TEST(ExampleTest, DigitalConverterComponentCheck)
   //auto ValueAnalogIn = std::shared_ptr<const SignalMsgs>();
   ReceiveStatus ret;
 
-  SignalMsgs ValueAnalogIn;
-  ValueAnalogIn.frame_id = "Teste 1";
-  ValueAnalogIn.timestamp = 100000000000;
-  ValueAnalogIn.value = -20.0;
+  SignalMsgs value_analog_in;
+  value_analog_in.frame_id = TEST_FRAMID;
+  value_analog_in.timestamp = TEST_TIMESTAMP;
+  value_analog_in.value = (-TEST_VALUE);
 
-  AnalogInput->sendAsync(ValueAnalogIn);
-
-  ret = DigitalOutput->receive(ValueDigitalOut, 500ms);
-  ASSERT_EQ(ReceiveStatus::RECEIVE_OK, ret);
-
-  EXPECT_EQ(*ValueDigitalOut, 0.0);
-
-  ValueAnalogIn.frame_id = "Teste 1";
-  ValueAnalogIn.timestamp = 100000000000;
-  ValueAnalogIn.value = 20.0;
-
-  AnalogInput->sendAsync(ValueAnalogIn);
+  AnalogInput->sendAsync(value_analog_in);
 
   ret = DigitalOutput->receive(ValueDigitalOut, 500ms);
   ASSERT_EQ(ReceiveStatus::RECEIVE_OK, ret);
 
-  EXPECT_EQ(*ValueDigitalOut, 10.0);
+  EXPECT_EQ(*ValueDigitalOut, TEST_RETURNED_VALUE_NEG);
+
+  value_analog_in.frame_id = TEST_FRAMID;
+  value_analog_in.timestamp = TEST_TIMESTAMP;
+  value_analog_in.value = TEST_VALUE;
+
+  AnalogInput->sendAsync(value_analog_in);
+
+  ret = DigitalOutput->receive(ValueDigitalOut, 500ms);
+  ASSERT_EQ(ReceiveStatus::RECEIVE_OK, ret);
+
+  EXPECT_EQ(*ValueDigitalOut, TEST_RETURNED_VALUE_POS);
 }
 
 int main(int argc, char **argv)

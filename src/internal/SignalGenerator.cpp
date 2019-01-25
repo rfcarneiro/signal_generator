@@ -13,17 +13,26 @@ double SignalGenerator::getSignalValue (bool cosine){
   return m_amp * sin(rad); 
 }
 
-int SignalGenerator::setAmp (double amp){
+void SignalGenerator::setAmp (double amp){
   m_amp = amp;
-  return 0;
 }
 
-int SignalGenerator::setDeg (double deg){
+void SignalGenerator::setDeg (double deg){
   m_deg = deg;
-  return 0;
 }
 
-int SignalGenerator::setStep (double step){
+void SignalGenerator::setStep (double step){
   m_step = step;
-  return 0;
+}
+
+double SignalGenerator::getAmp (void){
+  return m_amp;
+}
+
+double SignalGenerator::getDeg (void){
+  return m_deg;
+}
+
+double SignalGenerator::getStep (void){
+  return m_step;
 }

@@ -1,16 +1,9 @@
 # Initialize the package, specifing its name, used later as ${PROJECT_NAME}
 hyro_init_package(signal_generator VERSION 0.0.1)
-# Here we search and include the package we depend on
-#include ( FindPkgConfig  )
-#find_package ( Qt4 COMPONENTS QtCore QtGui QtOpenGl )
-#find_package ( QWT )
 
 hyro_find_package(hyro_utils REQUIRED)
 hyro_find_package(hyro_msgs REQUIRED)
 hyro_find_package(hyro_widgets REQUIRED)
-
-#include(${QT_USE_FILE} )
-#add_definitions(${QT_DEFINITIONS})
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations

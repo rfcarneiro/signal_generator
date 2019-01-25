@@ -1,14 +1,14 @@
 #include <internal/Thresholding.h>
 
-Thresholding::Thresholding (double digital_zero,double digital_one){
-  m_digital_zero = digital_zero;
-  m_digital_one = digital_one;
+Thresholding::Thresholding (double amplitude,double digital_zero,double digital_one):
+  m_digital_zero(digital_zero)
+  , m_digital_one(digital_one)
+{
 }
 
-int Thresholding::setThreshold (double threshold){
-  m_threshold = threshold;
-  return 0;
 
+void Thresholding::setThreshold (double threshold){
+  m_threshold = threshold;
 }
 
 double Thresholding::getThreshold (void){
