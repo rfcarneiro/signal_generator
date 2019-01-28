@@ -10,13 +10,12 @@
 #define TEST_FREQUENCY 30.0
 #define TEST_COSINE false
 #define TEST_TIMESTAMP 1000000000
-#define TEST_FRAMID     "Teste 1"
-#define TEST_VALUE      20.0
+#define TEST_FRAMID "Teste 1"
+#define TEST_VALUE 20.0
 #define TEST_RETURNED_VALUE_POS 1.0
 #define TEST_RETURNED_VALUE_NEG 0.0
 
 using namespace signal_generator;
-
 
 namespace hyro
 {
@@ -27,8 +26,8 @@ TEST(ExampleTest, SignalGeneratorComponentCheck)
 {
   //Configuration
   auto generator_configuration = "{"
+                                 "parameters: {amplitude: 0.5, frequency: 0.5, cosine: true},"
                                  "outputs: {"
-                                 //"analog_output: { protocol: 'api', ip: '0.0.0.0',   port: '50051' },"
                                  "analog_output: { protocol: 'api'},"
                                  "fix_dynamic: { protocol: 'api'},"
                                  "}"
@@ -76,16 +75,17 @@ TEST(ExampleTest, SignalGeneratorComponentCheck)
 
   auto return_value = analog_out->receive(value_analog_out, 500ms);
   ASSERT_EQ(ReceiveStatus::RECEIVE_OK, return_value);
-  ASSERT_GE(value_analog_out->value,(-TEST_AMPLITUDE));
-  ASSERT_LE(value_analog_out->value,TEST_AMPLITUDE);
+  ASSERT_GE(value_analog_out->value, (-TEST_AMPLITUDE));
+  ASSERT_LE(value_analog_out->value, TEST_AMPLITUDE);
 }
 
 TEST(ExampleTest, DigitalConverterComponentCheck)
 {
   //Configuration
   auto converter_configuration = "{"
+                                 "parameters: {amplitude: 2, threshold: 0.0},"
                                  "inputs: {"
-                                 "analog_input: { protocol: 'api' }"
+                                 "analog_input: { protocol: 'auto' }"
                                  "},"
                                  "outputs: {"
                                  "digital_output: { protocol: 'api' }"

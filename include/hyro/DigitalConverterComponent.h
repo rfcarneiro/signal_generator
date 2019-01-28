@@ -105,12 +105,12 @@ private:
    * @brief Pointer for Component Input Channel
    * 
    */
-  std::shared_ptr<hyro::ChannelInput<hyro::SignalMsgs>> signal_input;
+  std::shared_ptr<hyro::ChannelInput<hyro::SignalMsgs>> m_signal_input;
   /**
    * @brief Pointer for Component Output Channel
    * 
    */
-  std::shared_ptr<hyro::ChannelOutput<float>> signal_output;
+  std::shared_ptr<hyro::ChannelOutput<float>> m_signal_output;
 
   std::unique_ptr<hyro::ISpinner> m_spinner;
 

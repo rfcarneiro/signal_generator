@@ -17,6 +17,17 @@ SignalGeneratorComponent::init(const hyro::ComponentConfiguration &config)
   std::shared_ptr<ChannelOutput<std::vector<int>>>
   m_dummy = this->registerOutput<std::vector<int>>("fix_dynamic"_uri, config);
 
+  double amp,freq;
+  bool   cosine;
+
+  amp     = config.parameters.getParameter<double>("amplitude", 1.0);
+  freq    = config.parameters.getParameter<double>("frequency", 1.0);
+  cosine  = config.parameters.getParameter<bool>("cosine", false);
+  
+  m_signal.setAmp(amp);
+  m_signal.setDeg(freq);
+  m_cosine = cosine;
+  
   registerDynamicProperty<float>("amplitude",
                                   &SignalGeneratorComponent::setAmplitude,
                                   &SignalGeneratorComponent::getAmplitude,
@@ -68,9 +79,9 @@ SignalGeneratorComponent::update()
   signal_msg.value = analog_signal;
 
   m_signal_output->sendAsync(signal_msg);
-  #ifdef DEBUG
-    s_logger->info("\n frame id: {}, \n timestamp: {}, \n Signal: {} \n", signal_msg.frame_id, signal_msg.timestamp, signal_msg.value);
-  #endif
+  
+  s_logger->info("\n frame id: {}, \n timestamp: {}, \n Signal: {} \n", signal_msg.frame_id, signal_msg.timestamp, signal_msg.value);
+
   return hyro::Result::RESULT_OK;
 }
 
@@ -86,7 +97,7 @@ bool SignalGeneratorComponent::setFrequency(float freq){
   return true;
 }
 float SignalGeneratorComponent::getFrequency(void){
-  return (m_signal.getDeg());
+  return m_signal.getDeg();
 }
 bool SignalGeneratorComponent::setCosine(bool cosine){
   m_cosine = cosine;

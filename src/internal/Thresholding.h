@@ -19,6 +19,7 @@
 #define DIGITAL_ZERO_DEFAULT      0.0
 #define DIGITAL_ONE_DEFAULT       1.0
 #define DIGITAL_AMPLITUDE_DEFAULT 10.0
+#define DEFAULT_THRESHOLD         0.0
 
 class Thresholding{
 
@@ -40,6 +41,7 @@ class Thresholding{
 
   public:
   Thresholding (double amplitude = DIGITAL_AMPLITUDE_DEFAULT, 
+                double threshold = DEFAULT_THRESHOLD,
                 double digital_zero = DIGITAL_ZERO_DEFAULT,
                 double digital_one = DIGITAL_ONE_DEFAULT);
   /**

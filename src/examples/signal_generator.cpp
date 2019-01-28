@@ -8,7 +8,7 @@
 #include <../include/hyro/SignalGeneratorComponent.h>
 #include <../include/hyro/DigitalConverterComponent.h>
 
-#undef DEBUG
+//#define DEBUG
 #define SET_VALUES_OPTION 1
 #define EXIT_OPTION 2
 
@@ -31,6 +31,7 @@ int main(void)
 
   // Configuration Strings
   generator_configuration = "{"
+                            "parameters: {amplitude: 10, frequency: 10, cosine: true},"
                             "outputs: {"
                             "analog_output: { protocol: 'grpc', ip: '0.0.0.0',   port: '50051' },"
                             "fix_dynamic: { protocol: 'api'},"
@@ -38,6 +39,7 @@ int main(void)
                             "}";
 
   converter_configuration = "{"
+                            "parameters: {amplitude: 1, threshold: 0.0},"
                             "inputs: {"
                             "analog_input: { protocol: 'auto' }"
                             "},"

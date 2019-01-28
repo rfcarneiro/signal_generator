@@ -1,7 +1,8 @@
 #include <internal/Thresholding.h>
 
-Thresholding::Thresholding (double amplitude,double digital_zero,double digital_one)
+Thresholding::Thresholding (double amplitude,double threshold,double digital_zero,double digital_one)
   : m_amplitude(amplitude)
+  , m_threshold(threshold)
   , m_digital_zero(digital_zero)
   , m_digital_one(digital_one)
 {
