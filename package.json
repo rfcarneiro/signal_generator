@@ -1,0 +1,13 @@
+{
+	"name": "signal_generator",
+	"version": "0.0.1",
+
+	"author": "Rodrigo Fonseca Carneiro",
+	"description": "",
+
+	"dependencies": {
+		"hyro_core": "*",
+		"hyro_utils": "*",
+		"hyro_widgets": "*"
+	}
+}

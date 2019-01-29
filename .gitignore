@@ -26,6 +26,13 @@
 *.a
 *.lib
 
+# Doxygen files
+/html
+/latex
+/html/*
+/latex/*
+*.conf
+
 # Executables
 *.exe
 *.out
